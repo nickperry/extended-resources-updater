@@ -1,0 +1,37 @@
+apiVersion: v1
+data:
+  script: |-
+    #!/bin/sh
+    patch_node() {
+    curl -k --header "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" \
+    --header "Content-Type: application/json-patch+json" \
+    --request PATCH \
+    --data '[{"op": "add", "path": "/status/capacity/'$1'~1'$2'", "value": "'$3'"}]' \
+    https://kubernetes.default.svc.cluster.local/api/v1/nodes/${MY_NODE_NAME}/status
+    }
+
+    zstick=0
+    rfxtrx433=0
+    [ -c /dev/ttyACM0 ] && zstick=1
+    [ -c /dev/ttyUSB0 ] && rfxtrx433=1
+    patch_node aeotec zstick $zstick
+    patch_node rfxcom rfxtrx433 $rfxtrx433
+
+    while [ 1 ]
+    do
+    zstick_prev=$zstick
+    rfxtrx433_prev=$rfxtrx433
+    zstick=0
+    rfxtrx433=0
+    [ -c /dev/ttyACM0 ] && zstick=1
+    [ -c /dev/ttyUSB0 ] && rfxtrx433=1
+    [ $zstick_prev -eq $zstick ] || patch_node aeotec zstick $zstick
+    [ $rfxtrx433_prev -eq $rfxtrx433 ] || patch_node rfxcom rfxtrx433 $rfxtrx433
+    sleep 10
+    done
+
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: extended-resources-updater
+  namespace: kube-system

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  labels:
+    app: extended-resources-updater
+  name: extended-resources-updater
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      app: extended-resources-updater
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: extended-resources-updater
+    spec:
+      serviceAccountName: extended-resources-updater
+      containers:
+      - image: radial/busyboxplus:curl
+        command: ["sh"]
+        args: ["/extended-resources-updater.sh"]
+        name: updater
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        volumeMounts:
+        - name: hostdev
+          mountPath: /dev
+          readOnly: true
+        - name: configmap
+          mountPath: /extended-resources-updater.sh
+          subPath: extended-resources-updater.sh
+      volumes:
+      - name: hostdev
+        hostPath:
+          path: /dev
+      - name: configmap
+        configMap:
+          name: extended-resources-updater
+          items:
+          - key: script 
+            path: extended-resources-updater.sh
