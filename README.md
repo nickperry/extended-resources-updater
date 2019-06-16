@@ -6,7 +6,7 @@ One of the workloads I run on my 3 node Intel NUC based Kubernetes cluster at ho
 
 I have a requirement to be able move these transceivers from one node to another and have the Home Assistant workload automatically move to the new node where I've plugged in the devices. This allows me to take a node down, for example to reinstall the OS on it, without giving it too much thought. This helps make it viable to play with my cluster to a reasonable degree whilst also running a fairly critical workload on it.
 
-The foundation of achieving this goal is a mechanism by which inform the Home Assistant deployment which node has the USB device resources. I chose to implement this mechanism using Kubernetes' extended resources feature.
+The foundation of achieving this goal is a mechanism by which to inform the Home Assistant deployment which node has the USB device resources. I chose to implement this mechanism using Kubernetes' extended resources feature.
 
 ## Details
 
