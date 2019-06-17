@@ -27,7 +27,7 @@ The script in the config map can easily be modified for different vendor and dev
 
 extended-resources-updater-rbac.yml provides:
 1) A service account.
-2) A cluster role with solely the ability to patch node resources.
+2) A cluster role with solely the ability to patch node status.
 3) A role binding to bind the service account and cluster role.
 
 extended-resources-updater.yml provides a DaemonSet to run the updater script on every node in the cluster. It:
