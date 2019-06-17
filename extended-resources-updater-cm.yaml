@@ -9,7 +9,7 @@ data:
     --data '[{"op": "add", "path": "/status/capacity/'$1'~1'$2'", "value": "'$3'"}]' \
     https://kubernetes.default.svc.cluster.local/api/v1/nodes/${MY_NODE_NAME}/status
     }
-
+    # Initialise by forcing an update of the state of each resource.
     zstick=0
     rfxtrx433=0
     [ -c /dev/ttyACM0 ] && zstick=1
@@ -25,6 +25,7 @@ data:
     rfxtrx433=0
     [ -c /dev/ttyACM0 ] && zstick=1
     [ -c /dev/ttyUSB0 ] && rfxtrx433=1
+    # Only only call kube-api if there is a change in value since last iteration.
     [ $zstick_prev -eq $zstick ] || patch_node aeotec zstick $zstick
     [ $rfxtrx433_prev -eq $rfxtrx433 ] || patch_node rfxcom rfxtrx433 $rfxtrx433
     sleep 10
