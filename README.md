@@ -35,3 +35,7 @@ extended-resources-updater.yml provides a DaemonSet to run the updater script on
 2) Mounts the node's /dev filesystem read-only.
 3) Sets an environment variable MY_NODE_NAME used by the script, based on the pod's spec.nodeName.
 4) Executes the script using sh.
+
+## Making use of the Extended Resources
+See this page of the official Kubernetes documentation:
+https://kubernetes.io/docs/tasks/configure-pod-container/extended-resource/
