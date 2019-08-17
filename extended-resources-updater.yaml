@@ -26,6 +26,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        terminationMessagePath: /tmp/termination-log
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - name: hostdev
           mountPath: /dev
