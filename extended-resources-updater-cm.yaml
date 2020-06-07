@@ -9,6 +9,8 @@ data:
     --data '[{"op": "add", "path": "/status/capacity/'$1'~1'$2'", "value": "'$3'"}]' \
     https://kubernetes.default.svc.cluster.local/api/v1/nodes/${MY_NODE_NAME}/status
     }
+    # Wait for the Kubernetes API to become available.
+    until nslookup kubernetes.defautlt >/dev/null 2>&1; do echo Waiting for Kubernetes API; sleep 2; done
     # Initialise by forcing an update of the state of each resource.
     zstick=0
     rfxtrx433=0
